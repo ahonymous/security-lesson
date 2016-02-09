@@ -1,13 +1,20 @@
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User:
-            algorithm: bcrypt
-            cost: 12
+        Symfony\Component\Security\Core\User\User: plaintext
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
 
     providers:
+        in_memory:
+            memory:
+                users:
+                    alex:
+                        password: qwerty
+                        roles: ROLE_ADMIN
+                    test:
+                        password: qwerty
+                        roles: ROLE_USER
         user_from_db:
             entity:
                 class: AppBundle:User
@@ -19,20 +26,20 @@ security:
             security: false
 
         unsec:
-            pattern: ^/(login|login_check)
+            pattern: ^/(login|registration)$
             anonymous: ~
-            security: false
 
         admin_dashboard:
             pattern: ^/
             form_login:
-                login_path: /login
-                check_path: /login_check
+                provider: in_memory
+                login_path: login
+                check_path: login_check
                 username_parameter: form[username]
                 password_parameter: form[password]
             logout:
-                path: /logout
-#
-#    access_conrol:
-#        - { path: ^/admin, roles: ROLE_ADMIN }
-#        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+                path: logout
+
+    access_control:
+        - { path: ^/(login|registration), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_ADMIN }

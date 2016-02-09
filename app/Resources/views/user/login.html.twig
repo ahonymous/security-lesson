@@ -1,1 +1,5 @@
-{{ form(form, { 'novalidate': 'novalidate' }) }}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form(form, { 'novalidate': 'novalidate' }) }}
+{% endblock body %}
