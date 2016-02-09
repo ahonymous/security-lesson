@@ -4,6 +4,9 @@ security:
             algorithm: bcrypt
             cost: 12
 
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
     providers:
         user_from_db:
             entity:
@@ -11,17 +14,25 @@ security:
                 property: username
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        unsec:
+            pattern: ^/(login|login_check)
             anonymous: ~
-            # activate different ways to authenticate
+            security: false
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+        admin_dashboard:
+            pattern: ^/
+            form_login:
+                login_path: /login
+                check_path: /login_check
+                username_parameter: form[username]
+                password_parameter: form[password]
+            logout:
+                path: /logout
+#
+#    access_conrol:
+#        - { path: ^/admin, roles: ROLE_ADMIN }
+#        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

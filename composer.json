@@ -30,7 +30,8 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^2.7"
+        "symfony/phpunit-bridge": "^2.7",
+        "hautelook/alice-bundle": "1.x-dev"
     },
     "scripts": {
         "post-install-cmd": [
